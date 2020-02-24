@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Redirect } from "react-router-dom";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 export default function Login({ history }) {
@@ -35,6 +36,7 @@ export default function Login({ history }) {
 
   return (
     <div className="login">
+      {localStorage.getItem("token") ? <Redirect to="/protected"/> : ''}
       <h1>Welcome to the Bubble App!</h1>
       <div className="login-container">
         <form className="form" onSubmit={onSubmit}>

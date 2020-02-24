@@ -4,7 +4,7 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 import Bubbles from "./Bubbles";
 import ColorList from "./ColorList";
 
-const BubblePage = () => {
+const BubblePage = ({ history }) => {
   const [colorList, setColorList] = useState([]);
   const [error, setError] = useState('');
 
@@ -27,8 +27,15 @@ const BubblePage = () => {
     getColorList();
   }, [colorList]);
 
+  const logout = e => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    history.push('/');
+  };
+
   return (
     <>
+      <button onClick={logout}>Logout</button>
       <p>{error}</p>
       <ColorList colors={colorList} updateColors={setColorList} />
       <Bubbles colors={colorList} />

@@ -131,8 +131,6 @@ const ColorList = ({ colors, updateColors }) => {
           <button type="submit">add</button>
         </div>
       </form>
-      <div className="spacer" />
-      {/* stretch - build another form here to add a color */}
     </div>
   );
 };

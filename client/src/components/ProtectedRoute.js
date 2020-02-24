@@ -5,11 +5,11 @@ const ProtectedRoute = ({ component: Component, ...props }) => {
   return (
     <Route
       {...props}
-      render={() => {
+      render={routeProps => {
         // check for token, if there, return component
         // otherwise return to login page
         if (localStorage.getItem("token")) {
-          return <Component />;
+          return <Component {...routeProps} />;
         } else {
           return <Redirect to="/" />;
         }
