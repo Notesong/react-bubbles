@@ -22,9 +22,7 @@ const ColorList = ({ colors, updateColors }) => {
     // Make a put request to save your updated color
     axiosWithAuth()
       .put(`/colors/${colorToEdit.id}`, colorToEdit)
-      .then(res => {
-        updateColors(colors);
-      })
+      .then(res => {})
       .catch(err => {
         setError('Error: Unable to edit color.');
     })     
@@ -36,9 +34,7 @@ const ColorList = ({ colors, updateColors }) => {
     // Make a post request to add a color
     axiosWithAuth()
         .post(`/colors/`, colorToAdd)
-        .then(res => {
-          updateColors(colors);
-        })
+        .then(res => {})
         .catch(err => {
           setError('Error: Unable to add color.');
     })
