@@ -53,7 +53,6 @@ const ColorList = ({ colors, updateColors }) => {
   return (
     <div className="colors-wrap">
       <p>colors</p>
-      <p className="error">{error}</p>
       <ul>
         {colors.map(color => (
           <li key={color.color} onClick={() => editColor(color)}>
@@ -74,6 +73,7 @@ const ColorList = ({ colors, updateColors }) => {
           </li>
         ))}
       </ul>
+      <p className="error">{error}</p>
       {editing && (
         <form onSubmit={saveEdit}>
           <legend>edit color</legend>
@@ -104,7 +104,7 @@ const ColorList = ({ colors, updateColors }) => {
           </div>
         </form>
       )}
-            <form onSubmit={addColorToList}>
+      <form onSubmit={addColorToList}>
         <legend>add color</legend>
         <label>
           color name:

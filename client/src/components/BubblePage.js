@@ -36,7 +36,7 @@ const BubblePage = ({ history }) => {
   return (
     <>
       <button onClick={logout}>Logout</button>
-      <p>{error}</p>
+      <p className="error">{error}</p>
       <ColorList colors={colorList} updateColors={setColorList} />
       <Bubbles colors={colorList} />
     </>
