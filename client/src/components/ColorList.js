@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 const initialColor = {
   color: "",
@@ -7,9 +7,9 @@ const initialColor = {
 };
 
 const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const [error, setError] = useState('');
 
   const editColor = color => {
     setEditing(true);
@@ -19,17 +19,36 @@ const ColorList = ({ colors, updateColors }) => {
   const saveEdit = e => {
     e.preventDefault();
     // Make a put request to save your updated color
-    // think about where will you get the id from...
-    // where is is saved right now?
+    const editColor = async () => {
+      await axiosWithAuth()
+        .put(`/colors/${colorToEdit.id}`, colorToEdit)
+        .then(res => {
+          updateColors(colors);
+        })
+        .catch(err => {
+          setError('Error: Unable to edit color.');
+      })     
+    }
+    
+    editColor();
+    setEditing(false);
   };
 
   const deleteColor = color => {
-    // make a delete request to delete this color
+    // Make a delete request to delete this color
+    console.log("color variable in delete: ", color);
+    axiosWithAuth()
+        .delete(`/colors/${color.id}`)
+        .then(res => {})
+        .catch(err => {
+          setError('Error: Unable to delete color.');
+    });
   };
 
   return (
     <div className="colors-wrap">
       <p>colors</p>
+      <p className="error">{error}</p>
       <ul>
         {colors.map(color => (
           <li key={color.color} onClick={() => editColor(color)}>

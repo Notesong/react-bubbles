@@ -12,7 +12,7 @@ const BubblePage = () => {
   // set that data to the colorList state property
   useEffect(() => {
     setError('');
-    
+
     const getColorList = async () => {
       await axiosWithAuth()
         .get("/colors")
@@ -25,7 +25,7 @@ const BubblePage = () => {
     };
 
     getColorList();
-  }, []);
+  }, [colorList]);
 
   return (
     <>
