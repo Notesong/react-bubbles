@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
-export default function Login() {
+export default function Login({ history }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, showLoader] = useState(false);
