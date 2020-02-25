@@ -30,6 +30,10 @@ body,
   flex-direction: column;
 }
 
+.color-list {
+  display: flex;
+}
+
 .colors-wrap {
   height: 100%;
   width: 300px;
@@ -96,4 +100,43 @@ form {
     padding: 3px 8px;
     margin-top: 16px;
   }
+}
+
+.login {
+  margin: 0 auto;
+
+  .login-container {
+    margin: 0 auto;
+    margin-top: 3rem;
+    width: 400px;
+    
+    .form {
+      display: flex;
+      border: 1px solid #ddd;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    input {
+      margin: 15px 0;
+      padding: 10px;
+      width: auto;
+    }
+
+    button {
+      background-color: rgb(96, 189, 77);
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  }
+}
+
+.error {
+  color: red;
 }

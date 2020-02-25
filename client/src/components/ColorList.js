@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 const initialColor = {
   color: "",
@@ -7,9 +7,10 @@ const initialColor = {
 };
 
 const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const [colorToAdd, setColorToAdd] = useState(initialColor);
+  const [error, setError] = useState('');
 
   const editColor = color => {
     setEditing(true);
@@ -19,12 +20,52 @@ const ColorList = ({ colors, updateColors }) => {
   const saveEdit = e => {
     e.preventDefault();
     // Make a put request to save your updated color
-    // think about where will you get the id from...
-    // where is is saved right now?
+    axiosWithAuth()
+      .put(`/colors/${colorToEdit.id}`, colorToEdit)
+      .then(res => {
+        const removedColorArray = colors.filter(item => item.id !== res.data.id);
+        const updatedArray = [
+          ...removedColorArray,
+          { 
+            color: res.data.color,
+            code: res.data.code,
+            id: res.data.id,
+          }
+        ];
+        updateColors(updatedArray);
+      })
+      .catch(err => {
+        setError('Error: Unable to edit color.');
+    })     
+    setEditing(false);
+  };
+
+  const addColorToList = e => {
+    e.preventDefault();
+    // Make a post request to add a color
+    axiosWithAuth()
+        .post(`/colors/`, colorToAdd)
+        .then(res => {
+          updateColors(res.data);
+        })
+        .catch(err => {
+          setError('Error: Unable to add color.');
+    })
   };
 
   const deleteColor = color => {
-    // make a delete request to delete this color
+    // Make a delete request to delete this color
+    axiosWithAuth()
+        .delete(`/colors/${color.id}`)
+        .then(res => {
+          console.log(res)
+          const updatedArray = colors.filter(item => item.id !== color.id);
+          updateColors(updatedArray);
+        })
+        .catch(err => {
+          setError('Error: Unable to delete color.');
+    });
+
   };
 
   return (
@@ -50,6 +91,7 @@ const ColorList = ({ colors, updateColors }) => {
           </li>
         ))}
       </ul>
+      <p className="error">{error}</p>
       {editing && (
         <form onSubmit={saveEdit}>
           <legend>edit color</legend>
@@ -80,8 +122,33 @@ const ColorList = ({ colors, updateColors }) => {
           </div>
         </form>
       )}
-      <div className="spacer" />
-      {/* stretch - build another form here to add a color */}
+      <form onSubmit={addColorToList}>
+        <legend>add color</legend>
+        <label>
+          color name:
+          <input
+            onChange={e =>
+              setColorToAdd({ ...colorToAdd, color: e.target.value })
+            }
+            value={colorToAdd.color}
+          />
+        </label>
+        <label>
+          hex code:
+          <input
+            onChange={e =>
+              setColorToAdd({
+                ...colorToAdd,
+                code: { hex: e.target.value }
+              })
+            }
+            value={colorToAdd.code.hex}
+          />
+        </label>
+        <div className="button-row">
+          <button type="submit">add</button>
+        </div>
+      </form>
     </div>
   );
 };
