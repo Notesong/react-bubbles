@@ -25,7 +25,7 @@ const BubblePage = ({ history }) => {
     };
 
     getColorList();
-  }, [colorList]);
+  }, []);
 
   const logout = e => {
     e.preventDefault();

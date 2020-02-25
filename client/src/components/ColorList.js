@@ -22,7 +22,18 @@ const ColorList = ({ colors, updateColors }) => {
     // Make a put request to save your updated color
     axiosWithAuth()
       .put(`/colors/${colorToEdit.id}`, colorToEdit)
-      .then(res => {})
+      .then(res => {
+        const removedColorArray = colors.filter(item => item.id !== res.data.id);
+        const updatedArray = [
+          ...removedColorArray,
+          { 
+            color: res.data.color,
+            code: res.data.code,
+            id: res.data.id,
+          }
+        ];
+        updateColors(updatedArray);
+      })
       .catch(err => {
         setError('Error: Unable to edit color.');
     })     
@@ -34,7 +45,9 @@ const ColorList = ({ colors, updateColors }) => {
     // Make a post request to add a color
     axiosWithAuth()
         .post(`/colors/`, colorToAdd)
-        .then(res => {})
+        .then(res => {
+          updateColors(res.data);
+        })
         .catch(err => {
           setError('Error: Unable to add color.');
     })
@@ -44,10 +57,15 @@ const ColorList = ({ colors, updateColors }) => {
     // Make a delete request to delete this color
     axiosWithAuth()
         .delete(`/colors/${color.id}`)
-        .then(res => {})
+        .then(res => {
+          console.log(res)
+          const updatedArray = colors.filter(item => item.id !== color.id);
+          updateColors(updatedArray);
+        })
         .catch(err => {
           setError('Error: Unable to delete color.');
     });
+
   };
 
   return (
